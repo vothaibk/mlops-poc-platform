@@ -64,7 +64,7 @@ down() {
     docker_compose_file=$(get_docker_compose_file $service)
 
     # Use docker-compose
-    docker-compose -f "$docker_compose_file" down "$@"
+    docker compose -f "$docker_compose_file" down "$@"
 
     # Use docker swarm
     # docker stack rm "$service"
