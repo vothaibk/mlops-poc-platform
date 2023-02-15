@@ -51,7 +51,7 @@ up() {
     docker_compose_file=$(get_docker_compose_file $service)
 
     # Use docker-compose
-    docker-compose -f "$docker_compose_file" up -d "$@"
+    docker compose -f "$docker_compose_file" up -d "$@"
 
     # Use docker swarm
     # init_docker_swarm
@@ -85,11 +85,11 @@ down_airflow() {
 
 # ELK
 up_elk() {
-    docker-compose -f "$ELK/$ELK-docker-compose.yml" -f "$ELK/extensions/filebeat/filebeat-compose.yml" up -d "$@"
+    docker compose -f "$ELK/$ELK-docker-compose.yml" -f "$ELK/extensions/filebeat/filebeat-compose.yml" up -d "$@"
 }
 
 down_elk() {
-    docker-compose -f "$ELK/$ELK-docker-compose.yml" -f "$ELK/extensions/filebeat/filebeat-compose.yml" down "$@"
+    docker compose -f "$ELK/$ELK-docker-compose.yml" -f "$ELK/extensions/filebeat/filebeat-compose.yml" down "$@"
 }
 
 # FEAST
