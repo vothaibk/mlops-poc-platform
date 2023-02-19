@@ -25,7 +25,8 @@ services:
       - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
     ports:
       - 9100:9100
-
+    # extra_hosts:
+    #   - "host.docker.internal:host-gateway"
   prometheus:
     image: prom/prometheus:v2.38.0
     container_name: prometheus
@@ -41,7 +42,8 @@ services:
       - '--web.enable-lifecycle'
     ports:
       - 9090:9090
-
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
   grafana:
     image: grafana/grafana:9.0.5
     container_name: grafana
@@ -57,3 +59,5 @@ services:
     restart: unless-stopped
     ports:
       - 3000:3000
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
