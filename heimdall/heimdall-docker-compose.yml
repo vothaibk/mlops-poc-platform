@@ -1,0 +1,27 @@
+version: "3.7"
+services:
+  heimdall:
+    image: linuxserver/heimdall
+    container_name: heimdall
+    volumes:
+      - './run_env:/config'
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - VIRTUAL_HOST=mlops.thaivd.com
+      - LETSENCRYPT_HOST=mlops.thaivd.com
+      - LETSENCRYPT_EMAIL=mlops@thaivd.com
+      - VIRTUAL_PORT=80
+    ports:
+      - 80
+      - 443
+    restart: unless-stopped
+    networks:
+      - mlops-net
+
+networks:
+  mlops-net:
+    external: true
+
+

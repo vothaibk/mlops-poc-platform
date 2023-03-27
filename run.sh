@@ -10,6 +10,8 @@ FEAST="feast"
 JENKINS="jenkins"
 MLFLOW="mlflow"
 PROM_GRAF="prom-graf"
+HEIMDALL="heimdall"
+NGINX="nginx"
 RESTART_SLEEP_SEC=2
 
 usage() {
@@ -22,6 +24,8 @@ usage() {
     echo " $JENKINS             jenkins service"
     echo " $MLFLOW              mlflow service"
     echo " $PROM_GRAF           prometheus and grafana service"
+    echo " $HEIMDALL            heimdall gatewway"   
+    echo " $NGINX               reverse proxy"   
     echo "Available commands:"
     echo " up                   deploy service"
     echo " down                 stop and remove containers, networks"
@@ -128,6 +132,22 @@ down_prom_graf() {
     down "$PROM_GRAF" "$@"
 }
 
+#HEIMDALL
+up_heimdall() {
+    up "$HEIMDALL" "$@"
+}
+down_heimdall() {
+    down "$HEIMDALL" "$@"
+}
+
+#NGINX
+up_nginx() {
+    up "$NGINX" "$@"
+}
+down_nginx() {
+    down "$NGINX" "$@"
+}
+
 # ALL
 up_all() {
     up_airflow "$@"
@@ -136,6 +156,8 @@ up_all() {
     up_jenkins "$@"
     up_mlflow "$@"
     up_prom_graf "$@"
+    up_heimdall "$@"
+    up_nginx "$@"
 }
 
 down_all() {
@@ -145,6 +167,8 @@ down_all() {
     down_jenkins "$@"
     down_mlflow "$@"
     down_prom_graf "$@"
+    down_heimdall "$@"
+    down_nginx "$@"
 }
 
 if [[ -z "$cmd" ]]; then
@@ -163,6 +187,7 @@ shift 2
 
 case $cmd in
 up)
+    docker network create mlops-net
     case $service in
         all)
             up_all "$@"
@@ -185,6 +210,12 @@ up)
         "$PROM_GRAF")
             up_prom_graf "$@"
             ;;
+        "$HEIMDALL")
+            up_heimdall "$@"
+            ;;        
+        "$NGINX")
+            up_nginx "$@"
+            ;;    
         *)
             echo "Unknown service"
             usage
@@ -216,6 +247,12 @@ down)
         "$PROM_GRAF")
             down_prom_graf "$@"
             ;;
+        "$HEIMDALL")
+            down_heimdall "$@"
+            ;;    
+        "$NGINX")
+            down_nginx "$@"
+            ;; 
         *)
             echo "Unknown service"
             usage
@@ -261,6 +298,16 @@ restart)
             sleep $RESTART_SLEEP_SEC
             up_prom_graf "$@"
             ;;
+        "$HEIMDALL ")
+            down_heimdall "$@"
+            sleep $RESTART_SLEEP_SEC
+            up_heimdall "$@"
+            ;;  
+        "$NGINX ")
+            down_nginx "$@"
+            sleep $RESTART_SLEEP_SEC
+            up_nginx "$@"
+            ;;  
         *)
             echo "Unknown service"
             usage

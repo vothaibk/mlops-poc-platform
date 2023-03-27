@@ -3,6 +3,8 @@
 ## Quick start
 
 ```bash
+# Create network
+docker network create mlops-net
 # Up all
 bash run.sh all up
 # Down all
