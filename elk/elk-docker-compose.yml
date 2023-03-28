@@ -61,10 +61,16 @@ services:
       - ./kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml:ro,Z
     ports:
       - "5601:5601"
+      - 443
     environment:
-      KIBANA_SYSTEM_PASSWORD: ${KIBANA_SYSTEM_PASSWORD:-}
+      - KIBANA_SYSTEM_PASSWORD=${KIBANA_SYSTEM_PASSWORD:-}
+      - VIRTUAL_HOST=kibana.thaivd.com
+      - LETSENCRYPT_HOST=kibana.thaivd.com
+      - LETSENCRYPT_HOST=kibana@thaivd.com
+      - VIRTUAL_PORT=5601
     networks:
       - elk
+      - mlops-net
     depends_on:
       - elasticsearch
     # extra_hosts:
@@ -73,6 +79,8 @@ services:
 networks:
   elk:
     driver: bridge
+  mlops-net:
+    external: true
 
 volumes:
   setup:

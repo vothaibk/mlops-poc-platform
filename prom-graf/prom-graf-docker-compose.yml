@@ -4,7 +4,9 @@ version: '3.8'
 networks:
   monitoring:
     driver: bridge
-
+  mlops-net:
+    external: true
+    
 volumes:
   prometheus_data:
   grafana_data:
@@ -56,8 +58,14 @@ services:
       - GF_SECURITY_ADMIN_USER=${ADMIN_USER:-admin}
       - GF_SECURITY_ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
       - GF_USERS_ALLOW_SIGN_UP=false
+      - VIRTUAL_HOST=prom-graf.thaivd.com
+      - LETSENCRYPT_HOST=prom-graf.thaivd.com
+      - LETSENCRYPT_EMAIL=prom-graf@thaivd.com
+      - VIRTUAL_PORT=3000
     restart: unless-stopped
     ports:
-      - 3000:3000
+      - 3000
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    networks:
+      - "mlops-net"

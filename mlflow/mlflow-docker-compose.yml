@@ -9,7 +9,18 @@ services:
         MLFLOW_VERSION: ${MLFLOW_VERSION}
     ports:
       - "5000:5000"
+      - "443"
     environment:
       BACKEND_STORE_URI: sqlite:////mlflow/mlflow.db
+      VIRTUAL_HOST: mlflow.thaivd.com
+      LETSENCRYPT_HOST: mlflow.thaivd.com
+      LETSENCRYPT_EMAIL: mlflow@thaivd.com
+      VIRTUAL_PORT: 5000
     volumes:
       - ./run_env/data:/mlflow
+    networks:
+     - "mlops-net"
+
+networks:
+  mlops-net:
+    external: true

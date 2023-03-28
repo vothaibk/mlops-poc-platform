@@ -225,6 +225,7 @@ up)
     ;;
 
 down)
+    docker network rm mlops-net
     case $service in
         all)
             down_all "$@"
@@ -266,6 +267,7 @@ restart)
         all)
             down_all "$@"
             sleep $RESTART_SLEEP_SEC
+            docker network rm mlops-net
             up_all "$@"
             ;;
         "$AIRFLOW")
@@ -298,12 +300,12 @@ restart)
             sleep $RESTART_SLEEP_SEC
             up_prom_graf "$@"
             ;;
-        "$HEIMDALL ")
+        "$HEIMDALL")
             down_heimdall "$@"
             sleep $RESTART_SLEEP_SEC
             up_heimdall "$@"
             ;;  
-        "$NGINX ")
+        "$NGINX")
             down_nginx "$@"
             sleep $RESTART_SLEEP_SEC
             up_nginx "$@"
